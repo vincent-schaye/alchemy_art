@@ -1,5 +1,6 @@
-matplotlib==3.7.1
-numpy==1.24.3
-pandas==2.0.1
-scikit-learn==1.2.2
-statsmodels==0.14.0
+gradio
+openai
+pinecone-client
+python-dotenv
+Pillow
+torch
