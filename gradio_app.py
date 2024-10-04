@@ -72,8 +72,6 @@ def create_interface():
                 # Generate Audio button press action
                 generate_button.click(ag.generate_audio, inputs=[text_input, speaker_dropdown], outputs=audio_output)
 
-
-
                 
 
         with gr.Group(visible=False) as story_interface:
@@ -178,6 +176,7 @@ def create_interface():
                     save_story_btn: gr.update(visible=False),
                     main_menu_btn: gr.update(visible=False),
                     end_button: gr.update(visible=True)
+                    # add audio button 
                 }
             except StopIteration:
                 print("Debug: StopIteration caught, ending story")
@@ -191,6 +190,7 @@ def create_interface():
                     custom_choice: gr.update(value=""),  # Clear the input field
                     save_story_btn: gr.update(visible=True),
                     main_menu_btn: gr.update(visible=True)
+                    # add audio button 
                 }
             except Exception as e:
                 print(f"Debug: Unexpected error in handle_choice: {str(e)}")
@@ -206,6 +206,7 @@ def create_interface():
                     save_story_btn: gr.update(visible=False),
                     main_menu_btn: gr.update(visible=True),
                     end_button: gr.update(visible=False)
+                    # add audio button 
                 }
 
         def start_or_continue_story(user_id, is_new, *args):  # This is what kicks things of.
@@ -214,12 +215,12 @@ def create_interface():
                     name, place, tone, moral, length, age = args
                     story_generator = generate_bedtime_story(user_id, image_descriptions.value, is_continued=False,
                                                              name=name, place=place,
-                                                             tone=tone, moral=moral, length=float(length), age=int(age))
+                                                             tone=tone, moral=moral, length=float(length), age=int(age))# add audio button
                 else:
                     story_choice, tone, moral, length = args
                     story_generator = generate_bedtime_story(user_id, image_descriptions.value, is_continued=True,
                                                              story_choice=story_choice,
-                                                             tone=tone, moral=moral, length=float(length))
+                                                             tone=tone, moral=moral, length=float(length))# add audio button
 
                 first_segment = next(story_generator)
                 images, text, choices = display_story_segment(first_segment, generated_images.value)
@@ -238,6 +239,7 @@ def create_interface():
                     save_story_btn: gr.update(visible=False),
                     main_menu_btn: gr.update(visible=False),
                     end_button: gr.update(visible=True)
+                    # add audio button 
                 }
 
             except Exception as e:
@@ -254,6 +256,7 @@ def create_interface():
                     story_generator_state: None,
                     save_story_btn: gr.update(visible=False),
                     main_menu_btn: gr.update(visible=True)
+                    # add audio button 
                 }
 
         def save_story(user_id, story_text, name, place):
