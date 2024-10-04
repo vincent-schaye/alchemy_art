@@ -2,7 +2,9 @@ import re
 import gradio as gr
 from story_generator import generate_bedtime_story
 from vector_db_operation import retrieve_existing_story_titles, summarize_and_upsert_story
+import audio_generator as ag
 import os
+from TTS.api import TTS 
 
 # Import for handling images
 from PIL import Image
@@ -40,6 +42,39 @@ def create_interface():
                 cont_moral = gr.Textbox(label="New Moral")
                 cont_length = gr.Slider(minimum=1, maximum=6, step=1, label="Continuation Length (minutes)")
                 continue_btn = gr.Button("Continue Story")
+
+            ######## Audio Tab on Gradio ########
+            with gr.TabItem("Audio"):
+                
+                # Textbox for testing purpouses 
+                text_input = gr.Textbox(label="Text to generate audio from")
+
+                with gr.Row():
+                    # Audio input to record new voice
+                    audio_input = gr.Audio(sources="microphone", type="filepath", label="Record your voice")
+
+                    # Button to save the recorded audio
+                    save_button = gr.Button("Save Recording")
+                
+                # Dropdown for selecting voice saple to replicate from
+                speaker_dropdown = gr.Dropdown(choices=ag.get_speaker_names(), label="Choose Speaker")
+
+                # Button to generate audio
+                generate_button = gr.Button("Generate Audio")
+
+                # Audio output 
+                audio_output = gr.Audio(label="Generated Audio")
+
+                ### Button actions ###
+                # Save Recording button action
+                save_button.click(ag.save_recording, inputs=[audio_input], outputs=speaker_dropdown)
+
+                # Generate Audio button press action
+                generate_button.click(ag.generate_audio, inputs=[text_input, speaker_dropdown], outputs=audio_output)
+
+
+
+                
 
         with gr.Group(visible=False) as story_interface:
             image_display = gr.Gallery(label="Images")  # Gallery to support multiple images
