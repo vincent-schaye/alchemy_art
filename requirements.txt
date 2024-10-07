@@ -1,4 +1,11 @@
-gradio==4.44.0# ???
+gradio==4.44.0
+accelerate
+git+https://github.com/huggingface/diffusers@t2i-adapter-load-lora
+safetensors
+torch==2.4.0
+torchvision
+transformers
+xformers
 openai
 pinecone-client
 python-dotenv
