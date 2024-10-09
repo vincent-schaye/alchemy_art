@@ -2,6 +2,7 @@ import os
 import random
 import numpy as np
 import PIL.Image as Image
+from PIL import ImageOps
 import torch
 import torchvision.transforms.functional as TF
 import spaces
@@ -12,7 +13,6 @@ from diffusers import (
     T2IAdapter,
 )
 
-# Style definitions
 style_list = [
     {
         "name": "(No style)",
@@ -23,6 +23,11 @@ style_list = [
         "name": "Cinematic",
         "prompt": "cinematic still {prompt} . emotional, harmonious, vignette, highly detailed, high budget, bokeh, cinemascope, moody, epic, gorgeous, film grain, grainy",
         "negative_prompt": "anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured",
+    },
+    {
+        "name": "3D Model and Anime",
+        "prompt": "3d anime style {prompt} . professional 3d model, anime artwork, octane render, highly detailed, vibrant, dramatic lighting, studio anime, volumetric, key visual",
+        "negative_prompt": "ugly, deformed, disfigured, noisy, low poly, blurry, painting, photo, black and white, realism, low contrast",
     },
     {
         "name": "3D Model",
@@ -72,10 +77,9 @@ DEFAULT_STYLE_NAME = "(No style)"
 
 MAX_SEED = np.iinfo(np.int32).max
 
-# Helper functions
 def apply_style(style_name: str, positive: str, negative: str = "") -> tuple[str, str]:
     p, n = styles.get(style_name, styles[DEFAULT_STYLE_NAME])
-    return p.replace("{prompt}", positive), n + negative
+    return p.replace("{prompt}", positive), n + " " + negative
 
 def randomize_seed_fn(seed: int, randomize_seed: bool) -> int:
     if randomize_seed:
@@ -91,7 +95,6 @@ def pad_image_to_multiple(image: Image.Image, multiple: int = 32) -> Image.Image
     pad_width = new_width - width
     pad_height = new_height - height
 
-    # Apply symmetrical padding
     padding = (pad_width // 2, pad_height // 2, pad_width - pad_width // 2, pad_height - pad_height // 2)
     padded_image = TF.pad(image, padding)
 
@@ -146,30 +149,35 @@ def generate_images(
         
     generator = torch.Generator(device=device).manual_seed(seed)
 
+    original_negative_prompt = negative_prompt
+    print(f"Negative prompts: {original_negative_prompt}")
+
     for uploaded_image, prompt in zip(uploaded_images, prompts):
         print(f"Processing prompt: {prompt}")  # Debugging to ensure prompt is a string
-        
+
+        negative_prompt = original_negative_prompt
         # Store the original prompt before applying the style
         original_prompt = prompt
 
         # Apply style
         prompt, negative_prompt = apply_style(style_name, prompt, negative_prompt)
 
-        image = Image.open(uploaded_image.name).convert("RGB")
-        padded_image = pad_image_to_multiple(image, 32)  # Ensure proper padding
-    
-        print(f"Original Image Size: {image.size}, Padded Image Size: {padded_image.size}")
-        image_tensor = TF.to_tensor(padded_image).unsqueeze(0).to(device)
-        print(f"Image Tensor Shape: {image_tensor.shape}")
-        expected_width = 512  # Replace with the expected width if needed
-        expected_height = 512  # Replace with the expected height if needed
-        image_tensor = TF.resize(image_tensor, [expected_height, expected_width])
+        image = Image.open(uploaded_image.name).convert("L")
+        image = ImageOps.invert(image)
+        image = image.convert("RGB")
+
+        expected_width = 1024
+        expected_height = 1024
+        image = image.resize((expected_width, expected_height), Image.BICUBIC)
+
+        image_tensor = TF.to_tensor(image) > 0.5
+        image = TF.to_pil_image(image_tensor.to(torch.float32))
 
         with torch.no_grad():
             generated_image = pipe(
                 prompt=prompt,
                 negative_prompt=negative_prompt,
-                image=image_tensor,
+                image=image,
                 num_inference_steps=num_steps,
                 generator=generator,
                 guidance_scale=guidance_scale,
