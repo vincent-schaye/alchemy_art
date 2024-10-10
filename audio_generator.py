@@ -1,64 +1,80 @@
+""" audio_generation.py 
+
+Description
+    The following file contains functions to deal with the audio elements 
+    of the AlchemyArt project. 
+    It uses the coquiTTS library to generate an audio file that has 
+    a person of your choice (depending on the input files) read out 
+    text.
+"""
+
+
+
+
 import torch
 from TTS.api import TTS
 import gradio as gr
 import os 
 import shutil
+import io
 
 
 # Setup 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # Directory with speaker audio files
-speaker_directory = "./input_audio/"
-output_directory = "./output_audio/"
+speaker_dir = "./input_audio/"
+output_dir = "./output_audio/"
 
 
+  
 
 def get_speaker_names():
-    # get the names for the dropdown menu
 
-    speaker_files = os.listdir(speaker_directory)
-    # assuming files are named like "Name_voice_sample.wav" // os.path.splitext(file)[0]
-    speaker_names = [os.path.splitext(file)[0] for file in speaker_files if file.endswith('.wav')]
-    return speaker_names
+    #if not speaker:
+    #    raise ValueError("Speaker name is required.")
 
-def save_recording(audio_file_path):
-    # function saves user recordings to the speaker directory
+    # Gets list of all filenames form speaker_directory
+    files_in_dirs = os.listdir(speaker_dir)
+    all_speaker = [f for f in files_in_dirs if os.path.isfile(os.path.join(speaker_dir,f))]
 
-    if audio_file_path is None:
-        return "No audio file recorded."
+    return all_speaker  # Output: list of strings (filenames)
 
-    new_file_path = os.path.join(speaker_directory, 'user_voice.wav')
+def generate_audio(text,speaker: str):
+    # function generates audio file in ./output_audio/ based on the text and input voice
+    # returns string to audio file
 
-    shutil.move(audio_file_path,new_file_path)
+    model_name = 'tts_models/multilingual/multi-dataset/xtts_v2'
+    tts = TTS(model_name).to("cpu")
+    audio_input  = speaker_dir + speaker
+    audio_output = output_dir + "temp.wav"
+
+    # generating the audio file based on xtts_v2
+    tts.tts_to_file(text=text,
+                    speaker_wav=audio_input,
+                    language='en',
+                    file_path=audio_output)
     
-    return f"saved new voice as 'user_voice_wav'."
+    return audio_output # path to output file 
 
-def generate_audio(text,speaker):
-    # TTS function
+def clean_out_output_audio():
+    # Function to delete all files in the output_audio directory
 
-    model_manager = TTS().list_models()
-    tts_models = model_manager.list_tts_models()
-    
-    # load in model
-    tts = TTS(tts_models[0]).to('cpu')
+    files = [f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_dir, f))]
+    if not files:
+        return
 
-    # File setup
-    speaker_wav = os.path.join(speaker_directory, f"{speaker}.wav")
+    # If there are files, delete them
+    for filename in files:
+        file_path = os.path.join(output_dir, filename)
+        try:
+            os.remove(file_path)
+            print(f"Deleted {file_path}")
+        except Exception as e:
+            print(f"Failed to delete {file_path}. Reason: {e}")
+
+#def save_recording():
+#    # Function to save new Speaker
 
 
-    # check if the speaker file exists before trying to process it
-    if not os.path.exists(speaker_wav):
-        raise FileNotFoundError(f"Speaker audio file {speaker_wav} does not exist.")
-
-    audio_output = 'output_audio/gen_audio_1.wav'
-
-    # generate audio using the selected speaker
-    tts.tts_to_file(text=text, speaker_wav=speaker_wav, language='en', file_path=audio_output)
-
-    return audio_output
-
-def refresh_speaker_list():
-    # refresh dropdown menu 
-    return gr.Dropdown.update(choices=get_speaker_names())
 
