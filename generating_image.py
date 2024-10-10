@@ -25,14 +25,9 @@ style_list = [
         "negative_prompt": "anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured",
     },
     {
-        "name": "3D Model and Anime",
-        "prompt": "3d anime style {prompt} . professional 3d model, smooth surfaces, cartoon character, highly detailed, vibrant colors, futuristic robot, dramatic lighting, studio anime, cute, whimsical, octane render, dramatic lighting, playful design, anime artwork, volumetric, key visual",
-        "negative_prompt": "ugly, deformed, disfigured, noisy, low poly, blurry, painting, photo, black and white, realism, low contrast, harsh shadows, photorealistic",
-    },
-    {
         "name": "3D Model",
-        "prompt": "professional 3d model {prompt} . octane render, highly detailed, volumetric, dramatic lighting",
-        "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
+        "prompt": "3d style {prompt} . professional 3d model, smooth surfaces, cartoon character, highly detailed, vibrant colors, futuristic robot, dramatic lighting, studio anime, cute, whimsical, octane render, dramatic lighting, playful design, anime artwork, volumetric, key visual",
+        "negative_prompt": "ugly, deformed, disfigured, noisy, low poly, blurry, painting, photo, black and white, realism, low contrast, harsh shadows, photorealistic",
     },
     {
         "name": "Anime",
