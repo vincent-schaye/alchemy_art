@@ -20,11 +20,6 @@ style_list = [
         "negative_prompt": "",
     },
     {
-        "name": "Cinematic",
-        "prompt": "cinematic still {prompt} . emotional, harmonious, vignette, highly detailed, high budget, bokeh, cinemascope, moody, epic, gorgeous, film grain, grainy",
-        "negative_prompt": "anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured",
-    },
-    {
         "name": "3D Model",
         "prompt": "3d style {prompt} . professional 3d model, smooth surfaces, cartoon character, highly detailed, vibrant colors, futuristic robot, dramatic lighting, studio anime, cute, whimsical, octane render, dramatic lighting, playful design, anime artwork, volumetric, key visual",
         "negative_prompt": "ugly, deformed, disfigured, noisy, low poly, blurry, painting, photo, black and white, realism, low contrast, harsh shadows, photorealistic",
