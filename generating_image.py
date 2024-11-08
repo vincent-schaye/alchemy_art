@@ -35,11 +35,6 @@ style_list = [
         "negative_prompt": "photo, photorealistic, realism, ugly",
     },
     {
-        "name": "Photographic",
-        "prompt": "cinematic photo {prompt} . 35mm photograph, film, bokeh, professional, 4k, highly detailed",
-        "negative_prompt": "drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, deformed, ugly",
-    },
-    {
         "name": "Pixel art",
         "prompt": "pixel-art {prompt} . low-res, blocky, pixel art style, 8-bit graphics",
         "negative_prompt": "sloppy, messy, blurry, noisy, highly detailed, ultra textured, photo, realistic",
