@@ -35,11 +35,6 @@ style_list = [
         "negative_prompt": "photo, photorealistic, realism, ugly",
     },
     {
-        "name": "Photographic",
-        "prompt": "cinematic photo {prompt} . 35mm photograph, film, bokeh, professional, 4k, highly detailed",
-        "negative_prompt": "drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, deformed, ugly",
-    },
-    {
         "name": "Pixel art",
         "prompt": "pixel-art {prompt} . low-res, blocky, pixel art style, 8-bit graphics",
         "negative_prompt": "sloppy, messy, blurry, noisy, highly detailed, ultra textured, photo, realistic",
@@ -53,11 +48,6 @@ style_list = [
         "name": "Neonpunk",
         "prompt": "neonpunk style {prompt} . cyberpunk, vaporwave, neon, vibes, vibrant, stunningly beautiful, crisp, detailed, sleek, ultramodern, magenta highlights, dark purple shadows, high contrast, cinematic, ultra detailed, intricate, professional",
         "negative_prompt": "painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured",
-    },
-    {
-        "name": "Manga",
-        "prompt": "manga style {prompt} . vibrant, high-energy, detailed, iconic, Japanese comic style",
-        "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, realism, photorealistic, Western comic style",
     },
 ]
 
