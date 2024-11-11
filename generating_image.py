@@ -30,11 +30,6 @@ style_list = [
         "negative_prompt": "photo, deformed, black and white, realism, disfigured, low contrast",
     },
     {
-        "name": "Digital Art",
-        "prompt": "concept art {prompt} . digital artwork, illustrative, painterly, matte painting, highly detailed",
-        "negative_prompt": "photo, photorealistic, realism, ugly",
-    },
-    {
         "name": "Pixel art",
         "prompt": "pixel-art {prompt} . low-res, blocky, pixel art style, 8-bit graphics",
         "negative_prompt": "sloppy, messy, blurry, noisy, highly detailed, ultra textured, photo, realistic",
