@@ -26,8 +26,8 @@ style_list = [
     },
     {
         "name": "Anime",
-        "prompt": "anime artwork {prompt} . anime style, key visual, vibrant, studio anime,  highly detailed",
-        "negative_prompt": "photo, deformed, black and white, realism, disfigured, low contrast",
+        "prompt": "anime artwork {prompt} . best quality, extremely detailed, professional illustration, epic scene, sharp image, clear image, amazing details, vibrant colors, dynamic, studio anime, highly detailed, key visual, cinematic, expressive, beautiful composition, smooth shading, clean lines, ((detailed background))",
+        "negative_prompt": "photo, deformed, black and white, realism, disfigured, low contrast, ugly, low details, noisy, grainy, sketch, cartoonish, rough lines",
     },
     {
         "name": "Pixel art",
